@@ -110,9 +110,10 @@
         </el-tooltip>
         <!--        用户注册部分-->
         <div class="register">
-          <span style="font-size: 15px; color: white">没有账号，立即</span>
+          <span style="font-size: 15px; color: white">没有账号，立即
           <el-link type="primary" style="font-size: 15px" @click="open"><u>加入我们 </u><i class="el-icon-position" />
           </el-link>
+          </span>
           <div class="drawer-class">
             <!--避免默认有遮罩,添加：modal="false"取消-->
             <el-drawer
@@ -138,12 +139,15 @@
                 <div class="register-input">
                   <i class="el-icon-user" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
                   <!--登录表格部分-->
+                  <el-tooltip content="不要包含中文、空格特殊字符等" placement="top-end" effect="light">
                   <el-input
                     v-model="regisForm.username"
                     placeholder="用户名"
                     clearable
                   />
+                  </el-tooltip>
                   <i class="el-icon-key" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
+                  <el-tooltip content="不包含空格且密码长度不低于6位" placement="top-end" effect="light">
                   <el-input
                     :key="passwordType2"
                     v-model="regisForm.password"
@@ -151,18 +155,20 @@
                     :type="passwordType2"
                     clearable
                   />
+                  </el-tooltip>
                   <span class="show-regis-pwd" @click="showPwd2">
                     <svg-icon :icon-class="passwordType2 === 'password' ? 'eye' : 'eye-open'" />
                   </span>
 
                   <i class="el-icon-message" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
+                  <el-tooltip content="当前仅支持QQ邮箱注册" placement="top-end" effect="light">
                   <el-input
                     v-model="regisForm.email"
                     placeholder="QQ邮箱"
                     clearable
                     @change="checkRegisEmail"
                   />
-
+                  </el-tooltip>
                   <el-button type="primary" plain="plain" :disabled="isDisable" @click="sendcode">{{ buttonText }}</el-button>
                   <el-input
                     v-model="regisForm.capture"
@@ -171,10 +177,13 @@
                     clearable
                     class="input-capture"
                   />
+                  <div class="sure_button">
+                   <el-button type="primary" icon="el-icon-thumb" round :disabled="isDisable">确认注册</el-button>
+                  </div>
                 </div>
                 <!--                底部图片-->
                 <div class="demo-drawer__footer">
-                  <img src="../../assets/avatar/panda.gif">
+                  <img src="../../assets/avatar/panda.gif" style="margin-top:5px">
                 </div>
               </div>
             </el-drawer>
@@ -190,7 +199,7 @@
 
 import { validUsername } from '../../utils/validate'
 import { responsetips } from '../../utils/myaxios'
-import { AESEncrypt, AESDecrypt} from '../../utils/mycookie'
+import { AESEncrypt } from '../../utils/mycookie'
 // import { getCookie } from '../../utils/mycookie'
 export default {
   name: 'Login',
@@ -371,7 +380,7 @@ export default {
       }
       this.$confirm('确定要提交表单吗？')
         .then(_ => {
-          this.loading = true
+          //this.loading = true
           this.timer = setTimeout(() => {
             done()
             // 动画关闭需要一定的时间
@@ -622,6 +631,11 @@ export default {
         color: black;
         cursor: pointer;
         user-select: none;
+      }
+      .sure_button {
+        position: absolute;
+        padding-top: 10px;
+        right: 60px;
       }
     }
   }

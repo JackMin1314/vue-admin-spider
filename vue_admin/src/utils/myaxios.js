@@ -34,20 +34,37 @@ instance.defaults.retry = 2
 instance.defaults.retryDelay = 1000
 // instance.defaults.withCredentials = true // 设置axios每次请求带上cookies
 
-// 设置请求拦截器,给请求头默认添加header['csrf_token']的值
+// 设置请求拦截器,添加请求头和格式化参数等值
 instance.interceptors.request.use(
   config => {
-    // config.headers['csrf_token'] = getcsrf()
     if (config.method === 'post') {
       config.data = qs.stringify(config.data) // POST传参序列化
     }
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-    // config.headers['X-CSRFToken'] = 'csrf_token()'
     return config
   }, error => {
     return Promise.reject(error)
   }
 )
+// 设置响应拦截器，解决csrf_token过期问题
+instance.interceptors.response.use(
+  response => {
+    // 当请求是400的时候说明csrf_token过期了重新请求添加 
+    if (response.status === 400) {
+      this.axios.get('/').then(resp => {
+        config.headers['csrf_token'] = resp.headers['csrf_token']
+      }).catch(err => {console.log('响应拦截器get异常:', err)})
+      console.log('new csrf_token is:', resp.headers['csrf_token'])
+    }
+    else {
+      return Promise.resolve(response)
+    }
+  }, error => {
+    console.log('响应拦截异常:',error)
+    return Promise.reject(error)
+  }
+)
+
 export default instance
 
 export function responsetips(resp) {

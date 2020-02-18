@@ -59,7 +59,7 @@ export default {
     // }
     logout() {
       this.$axios.get('/quit').then((resp) => {
-        if (resp.data.code === '0') {
+        if (resp.code === '0') {
           responsetips(resp)
           // 允许退出的时候清除本地所有数据(简化处理)
         } else {

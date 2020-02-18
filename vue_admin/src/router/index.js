@@ -58,7 +58,13 @@ export const constantRoutes = [
 
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/views/error-page/404'),
+    hidden: true
+  },
+
+  {
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
     hidden: true
   },
 
@@ -160,7 +166,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+        path: 'https://github.com/JackMin1314/vue-admin-spider',
         meta: { title: 'External Link', icon: 'link' }
       }
     ]
