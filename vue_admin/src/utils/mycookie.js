@@ -24,7 +24,26 @@ export function getCookie(c_name) {
   }
   return ''
 }
- // 前端加密算法
-export function name(params) {
+/**
+ * AES加密
+ * @param {*} c_password 前端传来的需要加密的参数
+ */
+import CryptoJS from 'crypto-js'
+import c_key from '../main'
+export function AESEncrypt(c_password){
   
+  var encrypt=CryptoJS.AES.encrypt(c_password,CryptoJS.enc.Utf8.parse(c_key),{
+     mode: CryptoJS.mode.ECB,
+     padding: CryptoJS.pad.Pkcs7
+  }).toString();
+  console.log('encrypt:',encrypt)
+return encrypt
+}
+export function AESDecrypt(c_cipher) {
+  var decrypt=CryptoJS.AES.decrypt(c_cipher, CryptoJS.enc.Utf8.parse(c_key), {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8);// 必须要是utf8
+  console.log('decrypt:',decrypt)
+  return decrypt
 }

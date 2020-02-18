@@ -56,6 +56,9 @@ new Vue({
   store,
   render: h => h(App)
 })
+// 配置AES密钥必须8/16/32位
+var c_key="10209999"
+export default c_key
 // var service = axios.create({
 // })
 // // 请求拦截

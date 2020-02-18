@@ -186,10 +186,11 @@
 </template>
 
 <script>
-// import {validUsername} from '@/utils/validate'
+// 引入需要添加的
 
 import { validUsername } from '../../utils/validate'
 import { responsetips } from '../../utils/myaxios'
+import { AESEncrypt, AESDecrypt} from '../../utils/mycookie'
 // import { getCookie } from '../../utils/mycookie'
 export default {
   name: 'Login',
@@ -319,7 +320,8 @@ export default {
         this.$axios.post('/login', {
           'csrf_token': this.csrf_token,
           'username': this.loginForm.username,
-          'passwd': this.loginForm.password
+          // 这里添加了加密后的密码，然后发给后端
+          'passwd': AESEncrypt(this.loginForm.password)
         }).then(res => {
           if (res.data) {
             console.log('post resp_data:', res.data)
@@ -328,17 +330,12 @@ export default {
             // 请求成功通过
             if (res.data.code === '0') {
               this.loading = true
-              // this.$store.dispatch('user/login', this.loginForm).then(() => {
-              //   this.$router.push({ path: this.redirect || '/' })
-              //   this.loading = false
-              // }).catch(() => {
-              //   this.loading = false
-              // })
               // 这里进行了请求拦截，参考permission.js
               this.$router.push({
                 path: this.redirect || '/dashboard'
               })
               this.loading = false
+              // 本地保存相关数据包括加密的数据
             }
           } else {
             console.log('post login 请求结果为空...')

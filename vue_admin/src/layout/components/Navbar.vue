@@ -66,6 +66,12 @@ export default {
           // 已经退出过了本地也就没有了，不重复清理
           responsetips(resp)
         }
+        // 发起请求后延时1.5s重定向到登录页面
+        setTimeout(() => {
+          this.$router.push({
+                path: '/login'
+              })
+        }, 1500);
       }).catch((err) => {
         console.log('err is:', err)
         console.log('err data is:', err.data)
