@@ -26,7 +26,7 @@ export function getCookie(c_name) {
 }
 /**
  * AES加密
- * @param {*} c_password 前端传来的需要加密的参数
+ * @param {*} c_password 前端传来的需要加密的明文
  */
 import CryptoJS from 'crypto-js'
 import c_key from '../main'
@@ -39,6 +39,10 @@ export function AESEncrypt(c_password){
   console.log('encrypt:',encrypt)
 return encrypt
 }
+/**
+ * AES解密
+ * @param {*} c_cipher 密文
+ */
 export function AESDecrypt(c_cipher) {
   var decrypt=CryptoJS.AES.decrypt(c_cipher, CryptoJS.enc.Utf8.parse(c_key), {
     mode: CryptoJS.mode.ECB,
