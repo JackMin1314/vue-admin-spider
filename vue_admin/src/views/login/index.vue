@@ -126,7 +126,6 @@
               direction="rtl"
               custom-class="demo-drawer"
             >
-
               <div class="demo-drawer__content">
                 <el-page-header content="" style="color:black" @back="cancelForm" />
                 <!--              头部内容欢迎-->
@@ -136,30 +135,33 @@
                   </span>
                   <p style="font-size:22px;color:#333333;">每一天，乐在使用。</p>
                 </div>
+                <!-- 注册部分用户名 -->
                 <div class="register-input">
                   <i class="el-icon-user" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
                   <!--登录表格部分-->
-                  <el-tooltip content="不要包含中文、空格特殊字符等" placement="top-end" effect="light">
+                  <el-tooltip content="用户密码不要包含中文、空格特殊字符等" placement="top-end" effect="light">
                   <el-input
                     v-model="regisForm.username"
                     placeholder="用户名"
                     clearable
+                    @change="checkRegisUsername"
                   />
                   </el-tooltip>
+                  <!-- 注册部分密码 -->
                   <i class="el-icon-key" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
-                  <el-tooltip content="不包含空格且密码长度不低于6位" placement="top-end" effect="light">
                   <el-input
                     :key="passwordType2"
                     v-model="regisForm.password"
                     placeholder="密码"
                     :type="passwordType2"
                     clearable
+                    @change="checkRegisPassword"
                   />
-                  </el-tooltip>
+                  <!-- 注册部分密码的展示 -->
                   <span class="show-regis-pwd" @click="showPwd2">
                     <svg-icon :icon-class="passwordType2 === 'password' ? 'eye' : 'eye-open'" />
                   </span>
-
+                  <!-- 注册部分邮箱 -->
                   <i class="el-icon-message" style="font-size:16px;color: #2ac06d;padding-left: 20px" />
                   <el-tooltip content="当前仅支持QQ邮箱注册" placement="top-end" effect="light">
                   <el-input
@@ -169,6 +171,7 @@
                     @change="checkRegisEmail"
                   />
                   </el-tooltip>
+                  <!-- 注册部分获取验证码 -->
                   <el-button type="primary" plain="plain" :disabled="isDisable" @click="sendcode">{{ buttonText }}</el-button>
                   <el-input
                     v-model="regisForm.capture"
@@ -177,6 +180,7 @@
                     clearable
                     class="input-capture"
                   />
+                  <!-- 注册部分确认注册 -->
                   <div class="sure_button">
                    <el-button type="primary" icon="el-icon-thumb" round :disabled="isDisable">确认注册</el-button>
                   </div>
@@ -232,7 +236,11 @@ export default {
         username: '',
         password: '',
         email: '',
-        capture: ''
+        capture: '',
+        isEmail: false,
+        isEmailDisable: true,
+        isUsername: false,
+        isPassword: false
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -247,11 +255,8 @@ export default {
       passwordType: 'password',
       passwordType2: 'password',
       redirect: undefined,
-      isDisable: true,
-      isEmail: false,
-      isEmailDisable: true,
+      isDisable: true,  // 验证码按钮是否disable，true为按钮失效
       csrf_token: '',
-
       // add for register  panel
       dialog: false,
       timer: null
@@ -265,6 +270,7 @@ export default {
       immediate: true
     }
   },
+   // 函数部分
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -283,29 +289,78 @@ export default {
         this.passwordType2 = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
+        //this.$refs.password.focus()
       })
     },
+    checkRegisUsername() {
+      var value = this.regisForm.username
+      if(!value){
+        this.regisForm.isUsername = false
+         this.$notify({
+          message: '用户名不能为空，请重新输入',
+          type: 'error',
+          duration: 2500
+        })
+      }
+      if(value){
+        this.regisForm.isUsername = validUsername(value)
+        if(!this.regisForm.isUsername)
+        {
+          this.$notify({
+          message: '用户名不合法，请重新输入',
+          type: 'error',
+          duration: 2500
+        })
+        }
+      }
+      },
+    checkRegisPassword() {
+      var myvalue = this.regisForm.password
+      if(myvalue.length<6){
+        this.regisForm.isPassword = false
+         this.$notify({
+          message: '密码长度小于6位',
+          type: 'error',
+          duration: 2500
+        })
+        return
+      }
+      if(myvalue){
+        this.regisForm.isPassword = validUsername(myvalue)
+        if(!this.regisForm.isPassword) {
+          this.$notify({
+          message: '密码不合法，请重新输入',
+          type: 'error',
+          duration: 2500
+          })
+        }
+        }
+      },
     checkRegisEmail() {
       var value = this.regisForm.email
       if (!value) {
-        this.isEmail = false
+        this.regisForm.isEmail = false
         this.isDisable = true
         this.buttonText = '发送验证码'
-        this.isEmailDisable = true
+        this.regisForm.isEmailDisable = true
       }
       if (value) {
         setTimeout(() => {
           var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
           if (!reg.test(value)) {
-            this.$message('请输入有效的电子邮箱！')
-            this.isEmail = false
+            // this.$message('请输入有效的电子邮箱！')
+             this.$notify({
+              message: '请输入有效的电子邮箱！',
+              type: 'error',
+              duration: 2500
+            })
+            this.regisForm.isEmail = false
             this.isDisable = true
-            this.isEmailDisable = true
+            this.regisForm.isEmailDisable = true
           } else {
             this.isDisable = false
             console.log('right')
-            this.isEmail = true
+            this.regisForm.isEmail = true
           }
         }, 500)
       }

@@ -52,9 +52,9 @@ instance.interceptors.response.use(
     // 当请求是400的时候说明csrf_token过期了重新请求添加 
     if (response.status === 400) {
       this.axios.get('/').then(resp => {
-        config.headers['csrf_token'] = resp.headers['csrf_token']
+        instance.defaults.headers['csrf_token'] = resp.headers['csrf_token']
       }).catch(err => {console.log('响应拦截器get异常:', err)})
-      console.log('new csrf_token is:', resp.headers['csrf_token'])
+      console.log('new csrf_token is:', instance.defaults.headers['csrf_token'])
     }
     else {
       return Promise.resolve(response)
