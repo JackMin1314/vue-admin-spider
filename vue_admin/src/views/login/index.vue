@@ -288,6 +288,7 @@ export default {
       } else {
         this.passwordType2 = 'password'
       }
+      // 注册哦功能输入框并没有绑定到ref。点击展示按钮时候会触发原有的登录验证
       this.$nextTick(() => {
         //this.$refs.password.focus()
       })
@@ -316,6 +317,7 @@ export default {
       },
     checkRegisPassword() {
       var myvalue = this.regisForm.password
+      // 密码为空则为长度小于6
       if(myvalue.length<6){
         this.regisForm.isPassword = false
          this.$notify({
@@ -325,6 +327,7 @@ export default {
         })
         return
       }
+      // 当密码长度大于6进行验证
       if(myvalue){
         this.regisForm.isPassword = validUsername(myvalue)
         if(!this.regisForm.isPassword) {
