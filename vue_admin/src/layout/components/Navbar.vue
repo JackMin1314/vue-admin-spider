@@ -37,6 +37,7 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
+import { responsetips } from '../../utils/myaxios'
 export default {
   components: {
     Breadcrumb,
@@ -52,9 +53,23 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    // async logout() {
+    //   await this.$store.dispatch('user/logout')
+    //   this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    // }
+    logout() {
+      this.$axios.get('/quit').then((resp) => {
+        if (resp.data.code === '0') {
+          responsetips(resp)
+          // 允许退出的时候清除本地所有数据(简化处理)
+        } else {
+          // 已经退出过了本地也就没有了，不重复清理
+          responsetips(resp)
+        }
+      }).catch((err) => {
+        console.log('err is:', err)
+        console.log('err data is:', err.data)
+      });
     }
   }
 }

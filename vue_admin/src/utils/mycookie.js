@@ -24,3 +24,7 @@ export function getCookie(c_name) {
   }
   return ''
 }
+ // 前端加密算法
+export function name(params) {
+  
+}
