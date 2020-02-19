@@ -203,7 +203,7 @@
 
 import { validUsername } from '../../utils/validate'
 import { responsetips } from '../../utils/myaxios'
-import { AESEncrypt } from '../../utils/mycookie'
+import { AESEncrypt, setStorageExpire } from '../../utils/mycookie'
 // import { getCookie } from '../../utils/mycookie'
 export default {
   name: 'Login',
@@ -384,12 +384,13 @@ export default {
         } else {
           console.log('get / 请求结果为空...')
         }
+        const cpwd = AESEncrypt(this.loginForm.password)
         // 在 获取到csrf_token立即执行post
         this.$axios.post('/login', {
           'csrf_token': this.csrf_token,
           'username': this.loginForm.username,
           // 这里添加了加密后的密码，然后发给后端
-          'passwd': AESEncrypt(this.loginForm.password)
+          'passwd': cpwd
         }).then(res => {
           if (res.data) {
             console.log('post resp_data:', res.data)
@@ -404,6 +405,8 @@ export default {
               })
               this.loading = false
               // 本地保存相关数据包括加密的数据
+              setStorageExpire('username', this.loginForm.username, 24)
+              setStorageExpire('password', cpwd, 24)
             }
           } else {
             console.log('post login 请求结果为空...')
@@ -431,13 +434,14 @@ export default {
         } else {
           console.log('get / 请求结果为空...')
         }
+        const cpwd = AESEncrypt(this.regisForm.password)
         // 在 获取到csrf_token立即执行post
         this.$axios.post('/register', {
           'email': this.regisForm.email,
           'csrf_token': this.csrf_token,
           'username': this.regisForm.username,
           // 这里添加了加密后的密码，然后发给后端
-          'passwd': AESEncrypt(this.regisForm.password),
+          'passwd': cpwd,
           'capture': this.regisForm.capture
         }).then(res => {
           if (res.data) {
@@ -453,6 +457,8 @@ export default {
               })
               this.loading = false
               // 本地保存相关数据包括加密的数据
+              setStorageExpire('username', this.regisForm.username, 24)
+              setStorageExpire('password', cpwd, 24)
             }
           } else {
             console.log('post register 请求结果为空...')

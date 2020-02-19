@@ -12,7 +12,7 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <router-link to="/dashboard">
             <el-dropdown-item>
               Home
             </el-dropdown-item>
@@ -62,10 +62,12 @@ export default {
         if (resp.code === '0') {
           responsetips(resp)
           // 允许退出的时候清除本地所有数据(简化处理)
+          localStorage.clear()
         } else {
           // 已经退出过了本地也就没有了，不重复清理
           responsetips(resp)
         }
+        localStorage.clear()
         // 发起请求后延时1.5s重定向到登录页面
         setTimeout(() => {
           this.$router.push({

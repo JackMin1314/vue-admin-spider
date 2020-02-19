@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import message from 'element-ui'
+import { getStorageExpire } from './mycookie'
 
 // function getcsrf() {
 //   axios.get('http://127.0.0.1:9999/').then((res) => {

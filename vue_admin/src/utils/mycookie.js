@@ -51,3 +51,39 @@ export function AESDecrypt(c_cipher) {
   console.log('decrypt:',decrypt)
   return decrypt
 }
+
+/**
+ * 设置本地的localstorage键值
+ * @param {string} key 需要存本地localstorage的键名
+ * @param {string} value 需要本地存的localstorage的key对应的值
+ * @param {number} expire 以小时为单位的存活期
+ */
+export function setStorageExpire(key, value, expire) {
+  const obj = {
+    data: value,
+    time: Date.now(),
+    expire: 1000 * 60 * 60 * expire  // 1 hour*expire
+  }
+  localStorage.setItem(key, JSON.stringify(obj))
+}
+/**
+ * 根据key提取本地localstorage的值，过期会返回null
+ * @param {string} key 需要取本地localstorage的键名
+ */
+export function getStorageExpire(key) {
+  const value = localStorage.getItem(key) // value是一个json对象，里面保存了data,time,expire属性
+  if (value != null) {
+    var obj = JSON.parse(value)
+    const timespan = new Date().getTime() - obj.time
+    // 保存时间过久
+    if (timespan > obj.expire) {
+      localStorage.removeItem(key)
+      return null
+    } else {
+      return obj.data
+    }
+    // 本地没有这个值
+  } else {
+    return null
+  }
+}
