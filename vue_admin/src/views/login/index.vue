@@ -180,9 +180,9 @@
                     clearable
                     class="input-capture"
                   />
-                  <!-- 注册部分确认注册 -->
+                   <!-- 注册部分确认注册 -->
                   <div class="sure_button">
-                   <el-button type="primary" icon="el-icon-thumb" round :disabled="isDisable">确认注册</el-button>
+                   <el-button type="primary" icon="el-icon-thumb" round :disabled="isDisable" @click="handleRegis">确认注册</el-button>
                   </div>
                 </div>
                 <!--                底部图片-->
@@ -238,7 +238,6 @@ export default {
         email: '',
         capture: '',
         isEmail: false,
-        isEmailDisable: true,
         isUsername: false,
         isPassword: false
       },
@@ -256,6 +255,7 @@ export default {
       passwordType2: 'password',
       redirect: undefined,
       isDisable: true,  // 验证码按钮是否disable，true为按钮失效
+      isEmailDisable: true,
       csrf_token: '',
       // add for register  panel
       dialog: false,
@@ -288,7 +288,7 @@ export default {
       } else {
         this.passwordType2 = 'password'
       }
-      // 注册哦功能输入框并没有绑定到ref。点击展示按钮时候会触发原有的登录验证
+      // 注册功能输入框并没有绑定到ref。点击展示按钮时候会触发原有的登录验证
       this.$nextTick(() => {
         //this.$refs.password.focus()
       })
@@ -368,6 +368,7 @@ export default {
         }, 500)
       }
     },
+    // 登录请求
     getcsrf_login() {
       // axios默认会返回Promise实例，成功fulfilled状态调用.then，失败rejected状态时then方法捕捉到Promise的状态为rejected，调用.catch
       // 对于Promise对象成功的时候可以一直调用.then只要保证上一个状态时fulfilled就行。。
@@ -419,6 +420,56 @@ export default {
         })
       })
     },
+    // 注册请求
+    getcsrf_regis() {
+      this.$axios.get('/').then((res) => {
+        if (res.data) {
+          console.log('get resp_data:', res.data)
+          // console.log('get res.header.csrf:', res.headers['csrf_token'])
+          this.csrf_token = res.headers['csrf_token']
+          console.log(this.csrf_token)
+        } else {
+          console.log('get / 请求结果为空...')
+        }
+        // 在 获取到csrf_token立即执行post
+        this.$axios.post('/register', {
+          'email': this.regisForm.email,
+          'csrf_token': this.csrf_token,
+          'username': this.regisForm.username,
+          // 这里添加了加密后的密码，然后发给后端
+          'passwd': AESEncrypt(this.regisForm.password),
+          'capture': this.regisForm.capture
+        }).then(res => {
+          if (res.data) {
+            console.log('post resp_data:', res.data)
+            // 根据请求的返回code进行对于弹窗提示
+            responsetips(res)
+            // 请求成功通过
+            if (res.data.code === '0') {
+              this.loading = true
+              // 这里进行了请求拦截，参考permission.js
+              this.$router.push({
+                path: this.redirect || '/dashboard'
+              })
+              this.loading = false
+              // 本地保存相关数据包括加密的数据
+            }
+          } else {
+            console.log('post register 请求结果为空...')
+          }
+        }).catch(error => {
+          if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+          } else {
+            console.log('err:', error.message)
+          }
+          console.log(error.config)
+        })
+      })
+    },
+    // 登录事件
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -430,7 +481,17 @@ export default {
         }
       })
     },
-
+    // 注册事件
+    handleRegis() {
+      console.log(this.regisForm.isUsername, this.regisForm.isPassword, this.regisForm.isEmail, this.regisForm.capture)
+      if (this.regisForm.isUsername && this.regisForm.isPassword && 
+      this.regisForm.isEmail && this.regisForm.capture) {
+        // 均符合要求的时候可以注册
+        this.getcsrf_regis()
+      } else {
+        
+      }
+    },
     // add for register panel
     handleClose(done) {
       if (this.loading) {
@@ -457,7 +518,7 @@ export default {
       clearTimeout(this.timer)
       this.loading = false
     },
-    // add for pannel message trips
+    // add for pannel  register message trips
     open() {
       this.$message({
         showClose: true,
@@ -467,9 +528,34 @@ export default {
       })
       this.dialog = true
     },
+    // 请求发送邮箱验证码前提邮箱通过验证
+    getcsrf_regis_emailCode() {
+      this.$axios.get('/get_capture', {
+          params:{'email': this.regisForm.email}
+        }).then(res => {
+          if (res.data) {
+
+            console.log('post resp_data:', res.data)
+            // 根据请求的返回code进行对于弹窗提示
+            responsetips(res)
+          } else {
+            console.log('post register 请求结果为空...')
+          }
+        }).catch(error => {
+          if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+          } else {
+            console.log('err:', error.message)
+          }
+          console.log(error.config)
+        })
+    },
+    // 邮箱验证码事件
     sendcode() {
       this.checkRegisEmail()
-      if (this.isEmail && this.regisForm.email !== '') {
+      if (this.regisForm.isEmail && this.regisForm.email !== '') {
         console.log('email is ok')
         this.$notify({
           title: '发送成功',
@@ -480,6 +566,8 @@ export default {
         this.buttonText = '已发送'
         this.isDisable = true
         this.isEmailDisable = false
+        // 请求发送验证码
+        this.getcsrf_regis_emailCode()
       } else {
         this.buttonText = '发送验证码'
         this.isEmailDisable = true
@@ -658,7 +746,8 @@ export default {
 
           /* 下方的图片img标签样式*/
           img {
-            position: fixed;
+            background: transparent;
+            position: relative;
             width: auto;
             height: auto;
             max-width: 100%;
@@ -666,6 +755,8 @@ export default {
             padding-left: 40px;
             background-size: auto;
             background-repeat: no-repeat;
+            // 这里添加的是为了解决下方图片将确认注册按钮遮住导致点击失败
+            pointer-events:none;
           }
 
         }
