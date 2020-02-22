@@ -52,7 +52,8 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard',requireAuth: true, affix: true }
+      meta: { title: 'Dashboard', icon: 'dashboard',requireAuth: true}
+      // 如果meta添加了affix: true 则会使得页面左侧边栏收起来不展示
     }]
   },
 
