@@ -452,13 +452,17 @@ export default {
             if (res.data.code === '0') {
               this.loading = true
               // 这里进行了请求拦截，参考permission.js
+              // 本地保存相关数据包括加密的数据
+              setStorageExpire('username', this.regisForm.username, 24)
+              setStorageExpire('password', cpwd, 24)
               this.$router.push({
                 path: this.redirect || '/dashboard'
               })
               this.loading = false
-              // 本地保存相关数据包括加密的数据
-              setStorageExpire('username', this.regisForm.username, 24)
-              setStorageExpire('password', cpwd, 24)
+            } else {
+              // 没通过的话清空前端的storage
+              localStorage.removeItem('username')
+              localStorage.removeItem('password')
             }
           } else {
             console.log('post register 请求结果为空...')

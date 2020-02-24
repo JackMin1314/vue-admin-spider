@@ -48,11 +48,12 @@ export const constantRoutes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Layout,
+    meta: {requireAuth: true},
     children: [{
-      path: 'dashboard',
+      path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard',requireAuth: true}
+      meta: { title: 'Dashboard', icon: 'dashboard',requireAuth: true, affix: true}
       // 如果meta添加了affix: true 则会使得页面左侧边栏收起来不展示
     }]
   },
@@ -164,25 +165,13 @@ export const constantRoutes = [
   },
 
   {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/JackMin1314/vue-admin-spider',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
-
-  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
-      title: 'Permission',
+      title: '用户管理',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -192,9 +181,32 @@ export const constantRoutes = [
         component: () => import('@/views/permission/role'),
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
+          title: '权限管理',
           roles: ['admin']
         }
+      }
+    ]
+  },
+  {
+    path: '/sendbug',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'Documentation',
+        meta: { title: '提交错误', icon: 'bug' }
+      }
+    ]
+  },
+
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/JackMin1314/vue-admin-spider',
+        meta: { title: '友情链接', icon: 'link' }
       }
     ]
   },
