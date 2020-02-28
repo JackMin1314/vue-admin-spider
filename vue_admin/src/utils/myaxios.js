@@ -1,7 +1,9 @@
 import axios from 'axios'
 import qs from 'qs'
 import message from 'element-ui'
-import { getStorageExpire } from './mycookie'
+import {
+  getStorageExpire
+} from './mycookie'
 
 // function getcsrf() {
 //   axios.get('http://127.0.0.1:9999/').then((res) => {
@@ -39,6 +41,7 @@ instance.defaults.retryDelay = 1000
 instance.interceptors.request.use(
   config => {
     if (config.method === 'post') {
+
       config.data = qs.stringify(config.data) // POST传参序列化
     }
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -54,14 +57,15 @@ instance.interceptors.response.use(
     if (response.status === 400) {
       this.axios.get('/').then(resp => {
         instance.defaults.headers['csrf_token'] = resp.headers['csrf_token']
-      }).catch(err => {console.log('响应拦截器get异常:', err)})
+      }).catch(err => {
+        console.log('响应拦截器get异常:', err)
+      })
       console.log('new csrf_token is:', instance.defaults.headers['csrf_token'])
-    }
-    else {
+    } else {
       return Promise.resolve(response)
     }
   }, error => {
-    console.log('响应拦截异常:',error)
+    console.log('响应拦截异常:', error)
     return Promise.reject(error)
   }
 )
