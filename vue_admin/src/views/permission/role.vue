@@ -68,7 +68,7 @@
           <el-button
             type="danger"
             size="small"
-            @click="handleDelete(scope.$index,tableData)"
+            @click="handleDelete(scope.$index,scope.row)"
             icon="el-icon-delete"
           >删除</el-button>
           <!-- 修改按钮的dialog弹窗内容 -->
@@ -100,7 +100,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="changeRole">提 交</el-button>
+              <el-button type="primary" @click="changeRole(dialog_obj)">提 交</el-button>
             </div>
           </el-dialog>
         </template>
@@ -154,7 +154,7 @@ export default {
       console.log(index, row);
     },
     // 删除按钮事件
-    handleDelete(index, tableData) {
+    handleDelete(index, row) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -162,12 +162,44 @@ export default {
       })
         .then(() => {
           // 执行删除用户操作，如果没有删除成功则responsetips弹窗提示
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+          this.$axios.get("/").then(get_resp => {
+            this.$axios
+              .post("/delete_user", {
+                username: getStorageExpire("username"),
+                csrf_token: get_resp.headers["csrf_token"],
+                othername: row.USER_NAME,
+                otheremail: row.USER_MAIL
+              })
+              .then(res => {
+                if (res.data) {
+                  // res是响应对象,里面data字段会保存后端返回的json数据
+                  console.log("post change_role_data:", res.data);
+                  // 根据请求的返回code进行对于弹窗提示
+                  responsetips(res);
+                  // 如果请求到用户列表数据的时候
+                  if (res.data.code === "0") {
+                    // 成功刷新列表
+                    // 前端删掉这行数据
+                    this.tableData.splice(index, 1);
+                    setTimeout(() => {
+                      this.fetch_userList();
+                    }, 1500);
+                  }
+                } else {
+                  console.log("post chagnerole用户列表请求结果为空...");
+                }
+              })
+              .catch(err => {
+                if (error.response) {
+                  console.log(error.response.data);
+                  console.log(error.response.status);
+                  console.log(error.response.headers);
+                } else {
+                  console.log("err:", error.message);
+                }
+                console.log(error.config);
+              });
           });
-          // 前端删掉这行数据
-          tableData.splice(index, 1);
 
           // 删除失败则不经行任何操作responsetips弹窗提示
         })
@@ -269,8 +301,43 @@ export default {
       }
     },
     // 修改了用户的数据后提交
-    changeRole() {
+    changeRole(dialog_obj) {
       this.dialogFormVisible = false;
+      this.$axios.get("/").then(get_resp => {
+        this.$axios
+          .post("/change_role", {
+            username: getStorageExpire("username"),
+            csrf_token: get_resp.headers["csrf_token"],
+            othername: dialog_obj.USER_NAME,
+            new_othertype: dialog_obj.USER_TYPE,
+            new_otherlock: dialog_obj.USER_LOCK
+          })
+          .then(res => {
+            if (res.data) {
+              // res是响应对象,里面data字段会保存后端返回的json数据
+              console.log("post change_role_data:", res.data);
+              // 根据请求的返回code进行对于弹窗提示
+              responsetips(res);
+              // 如果请求到用户列表数据的时候
+              if (res.data.code === "0") {
+                // 成功刷新列表
+                this.fetch_userList();
+              }
+            } else {
+              console.log("post chagnerole用户列表请求结果为空...");
+            }
+          })
+          .catch(err => {
+            if (error.response) {
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else {
+              console.log("err:", error.message);
+            }
+            console.log(error.config);
+          });
+      });
     },
     // 清空表格
     clearTable() {
