@@ -15,7 +15,16 @@ const store = new Vuex.Store({
     tagsView,
     user
   },
-  getters
+  getters,
+
+  state: {
+    userlistMsg: ''
+  },
+  mutations: {
+    set_userlistMsg(state, data) {
+      state.userlistMsg = data;
+    }
+  }
 })
 
 export default store

@@ -112,7 +112,7 @@
 
 <script>
 import { responsetips } from "../../utils/myaxios";
-import { getStorageExpire } from "../../utils/mycookie";
+import { getStorageExpire, setStorageExpire } from "../../utils/mycookie";
 
 export default {
   data() {
@@ -133,7 +133,17 @@ export default {
     };
   },
   created() {
-    this.fetch_userList();
+    //在页面加载时读取sessionStorage里的状态信息
+
+    if (sessionStorage.getItem("userlistMsg")) {
+      this.tableData = JSON.parse(sessionStorage.getItem("userlistMsg"));
+    }
+
+    //在页面刷新时将vuex里的信息保存到sessionStorage里
+
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem("userlistMsg", JSON.stringify(this.tableData));
+    });
   },
   methods: {
     // 修改按钮事件
@@ -151,7 +161,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          //　执行删除用户操作，如果没有删除成功则responsetips弹窗提示
+          // 执行删除用户操作，如果没有删除成功则responsetips弹窗提示
           this.$message({
             type: "success",
             message: "删除成功!"
@@ -174,6 +184,7 @@ export default {
       this.listLoading = true;
       this.fetch_userList();
       this.isloading = false;
+      // setStorageExpire("fetched", "1", 0.05);
     },
     // 搜索按钮事件
     submitSearch() {
@@ -259,7 +270,7 @@ export default {
     },
     // 修改了用户的数据后提交
     changeRole() {
-      dialogFormVisible = false;
+      this.dialogFormVisible = false;
     },
     // 清空表格
     clearTable() {
@@ -287,6 +298,7 @@ export default {
                 this.listLoading = true;
                 this.tableData = res.data.data;
                 this.listLoading = false;
+                this.$store.commit("set_userlistMsg", this.tableData); //修改保存数据
               }
             } else {
               console.log("post 用户列表请求结果为空...");

@@ -293,11 +293,19 @@ export default {
     };
   },
   watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+    // 这里添加监听事件保证了在点击按钮前保存信息，避免路由守卫拦截（这里可能会人为构造骗过守卫，所以设置了有效期3min，真正登陆是24h）
+    loginForm: {
+      handler: function() {
+        if (this.loginForm.username != "") {
+          setStorageExpire("username", this.loginForm.username, 0.05);
+          console.log("watch username", this.loginForm.username);
+        }
+        if (this.loginForm.password != "") {
+          setStorageExpire("password", this.loginForm.password, 0.05);
+          console.log("watch password", this.loginForm.password);
+        }
       },
-      immediate: true
+      deep: true
     }
   },
   // 函数部分
