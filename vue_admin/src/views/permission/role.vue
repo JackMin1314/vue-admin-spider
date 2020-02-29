@@ -25,7 +25,7 @@
       <el-table-column align="center" label="用户类型" width="80">
         <template v-slot="scope">
           <el-tag
-            :type="scope.row.USER_TYPE === 'user' ? 'primary' : 'success'"
+            :type="scope.row.USER_TYPE | typeFilter"
             disable-transitions
           >{{scope.row.USER_TYPE}}</el-tag>
         </template>
@@ -115,6 +115,16 @@ import { responsetips } from "../../utils/myaxios";
 import { getStorageExpire, setStorageExpire } from "../../utils/mycookie";
 
 export default {
+  filters: {
+    typeFilter(type) {
+      const typeMap = {
+        super: "warning",
+        admin: "success",
+        user: "primary"
+      };
+      return typeMap[type];
+    }
+  },
   data() {
     return {
       tableData: [],

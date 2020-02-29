@@ -1,21 +1,26 @@
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+      <!-- <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
+        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 v-else class="sidebar-title">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
-      </router-link>
+        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 class="sidebar-title">{{ title }}</h1>
+      </router-link>-->
+      <div class="sidebar-logo-link">
+        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 class="sidebar-title">{{ title }}</h1>
+      </div>
     </transition>
   </div>
 </template>
 
 <script>
+import { getStorageExpire } from "../../../utils/mycookie";
 export default {
-  name: 'SidebarLogo',
+  name: "SidebarLogo",
   props: {
     collapse: {
       type: Boolean,
@@ -24,11 +29,12 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
-    }
+      title: "您好，" + getStorageExpire("username"),
+      logo:
+        "https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png"
+    };
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
