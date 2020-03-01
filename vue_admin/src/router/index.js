@@ -48,12 +48,19 @@ export const constantRoutes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Layout,
-    meta: {requireAuth: true},
+    meta: {
+      requireAuth: true
+    },
     children: [{
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard',requireAuth: true, affix: true}
+      meta: {
+        title: 'Dashboard',
+        icon: 'dashboard',
+        requireAuth: true,
+        affix: true
+      }
       // 如果meta添加了affix: true 则会使得页面左侧边栏收起来不展示
     }]
   },
@@ -75,19 +82,28 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
+    meta: {
+      title: 'Example',
+      icon: 'example'
+    },
+    children: [{
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' ,requireAuth: true}
+        meta: {
+          title: 'Table',
+          icon: 'table',
+          requireAuth: true
+        }
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: {
+          title: 'Tree',
+          icon: 'tree'
+        }
       }
     ]
   },
@@ -95,73 +111,37 @@ export const constantRoutes = [
   {
     path: '/form',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' ,requireAuth: true}
+    children: [{
+      path: 'index',
+      name: 'Form',
+      component: () => import('@/views/form/index'),
+      meta: {
+        title: 'Form',
+        icon: 'form',
+        requireAuth: true
       }
-    ]
+    }]
   },
 
   {
-    path: '/nested',
+    path: '/excel',
+    name: 'Excel',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/excel/list',
+    alwaysShow: true,
     meta: {
-      title: 'Nested',
-      icon: 'nested'
+      title: '用户文件',
+      icon: 'excel'
     },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+    children: [{
+      path: 'list',
+      name: 'ArticleList',
+      component: () => import('@/views/excel/list'),
+      meta: {
+        title: '文件列表',
+        requireAuth: true
       }
-    ]
+    }]
   },
 
   {
@@ -175,50 +155,73 @@ export const constantRoutes = [
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: '权限管理',
-          roles: ['admin']
-        }
+    children: [{
+      path: 'role',
+      component: () => import('@/views/permission/role'),
+      name: 'RolePermission',
+      meta: {
+        title: '权限管理',
+        roles: ['admin']
       }
-    ]
+    }]
   },
+
+  {
+    path: '/monitoring',
+    component: Layout,
+    children: [{
+      path: 'index',
+      component: () => import('@/views/monitoring/index'),
+      name: 'Resource monitoring',
+      meta: {
+        title: '资源监测',
+        icon: 'example'
+      }
+    }]
+
+
+  },
+
   {
     path: '/sendbug',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '提交错误', icon: 'bug' }
+    children: [{
+      path: 'index',
+      component: () => import('@/views/sendbug/index'),
+      name: 'Documentation',
+      meta: {
+        title: '提交错误',
+        icon: 'bug'
       }
-    ]
+    }]
   },
 
   {
     path: 'external-link',
     component: Layout,
-    children: [
-      {
-        path: 'https://github.com/JackMin1314/vue-admin-spider',
-        meta: { title: '友情链接', icon: 'link' }
+    children: [{
+      path: 'https://github.com/JackMin1314/vue-admin-spider',
+      meta: {
+        title: '友情链接',
+        icon: 'link'
       }
-    ]
+    }]
   },
 
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

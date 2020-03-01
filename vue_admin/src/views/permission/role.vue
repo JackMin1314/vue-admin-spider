@@ -16,6 +16,7 @@
       :data="tableData"
       style="width: 100%;margin-top:30px;"
       cell-style="font-weight: 600;"
+      fit
       highlight-current-row
       border
     >
