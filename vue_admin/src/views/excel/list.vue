@@ -149,7 +149,53 @@ export default {
         }
       });
     },
-    handledelete(idnex, row) {},
+    handledelete(index, row) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          // 执行删除用户操作，如果没有删除成功则responsetips弹窗提示
+          this.$axios.get("/").then(get_resp => {
+            this.$axios
+              .post("/delete_user_file", {
+                username: getStorageExpire("username"),
+                csrf_token: get_resp.headers["csrf_token"],
+                filename: row.filename
+              })
+              .then(res => {
+                if (res.data) {
+                  // 根据请求的返回code进行对于弹窗提示
+                  responsetips(res);
+                  // 如果请求到用户列表数据的时候
+                  if (res.data.code === "0") {
+                    // 成功刷新列表
+                    // 前端删掉这行数据
+                    this.tableData.splice(index, 1);
+                  }
+                }
+              })
+              .catch(err => {
+                if (error.response) {
+                  console.log(error.response.data);
+                  console.log(error.response.status);
+                } else {
+                  console.log("err:", error.message);
+                }
+                console.log(error.config);
+              });
+          });
+
+          // 删除失败则不经行任何操作responsetips弹窗提示
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     // 刷新按钮事件
     refreshData() {
       this.isloading = true;
