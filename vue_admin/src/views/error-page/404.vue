@@ -2,18 +2,22 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404">
-        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404" />
+        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404" />
+        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404" />
+        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404" />
       </div>
       <div class="bullshit">
+        <el-button icon="el-icon-arrow-left" type="primary" @click="back">返回</el-button>
         <div class="bullshit__oops">OOPS!</div>
-        <div class="bullshit__info">逛逛别的吧>>>>
+        <div class="bullshit__info">
+          逛逛别的吧>>>>
           <a style="color:#20a0ff" href="http://www.jackmin1314.world" target="_blank">个人主页</a>
         </div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
+        <div
+          class="bullshit__info"
+        >Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
         <a href="/#/dashboard" class="bullshit__return-home">Back to home</a>
       </div>
     </div>
@@ -21,20 +25,28 @@
 </template>
 
 <script>
-
 export default {
-  name: 'Page404',
+  name: "Page404",
   computed: {
     message() {
-      return '呜呜呜~~ 网站管理员把网页弄丢了...'
+      return "呜呜呜~~ 网站管理员把网页弄丢了...";
+    }
+  },
+  methods: {
+    back() {
+      if (this.$route.query.noGoBack) {
+        this.$router.push({ path: "/dashboard" });
+      } else {
+        this.$router.go(-1);
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.wscn-http404-container{
-  transform: translate(-50%,-50%);
+.wscn-http404-container {
+  transform: translate(-50%, -50%);
   position: absolute;
   top: 40%;
   left: 50%;

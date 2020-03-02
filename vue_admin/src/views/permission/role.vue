@@ -148,6 +148,8 @@ export default {
 
     if (sessionStorage.getItem("userlistMsg")) {
       this.tableData = JSON.parse(sessionStorage.getItem("userlistMsg"));
+    } else {
+      this.fetch_userList();
     }
 
     //在页面刷新时将vuex里的信息保存到sessionStorage里
@@ -195,6 +197,11 @@ export default {
                     setTimeout(() => {
                       this.fetch_userList();
                     }, 1500);
+                  } else if (res.data.code === "1") {
+                    // 没有权限的时候跳到401页面
+                    this.$router.push({
+                      path: "/401"
+                    });
                   }
                 } else {
                   console.log("post chagnerole用户列表请求结果为空...");

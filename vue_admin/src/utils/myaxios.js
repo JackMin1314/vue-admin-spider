@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import message from 'element-ui'
+import router from '@/router'
 import {
   getStorageExpire
 } from './mycookie'
@@ -61,12 +62,27 @@ instance.interceptors.response.use(
         console.log('响应拦截器get异常:', err)
       })
       console.log('new csrf_token is:', instance.defaults.headers['csrf_token'])
+    } else if (response.status === 404) {
+      router.push({
+        path: "/404"
+      });
     } else {
       return Promise.resolve(response)
     }
   }, error => {
     console.log('响应拦截异常:', error)
-    return Promise.reject(error)
+    // 虽然是error但是希望组件可以获得返回的err信息，因此不能使用reject，而是resolve
+    if (error.response.status === 404) {
+      router.push({
+        path: "/404"
+      });
+    }
+    if (error.response.status === 401) {
+      router.push({
+        path: "/401"
+      });
+    }
+    return Promise.resolve(error.response)
   }
 )
 
