@@ -117,13 +117,16 @@ export default {
     //   });
     // }
     download(index, row) {
+      // 前端进行转义避免后端解析的时候将文件名解析成其他的字符例如: ”我的C++学习笔记.md“变成了”我的C 学习笔记.md“丢失了空格
+      // 因为+在url中会被转义成空格
+      var url =
+        "/download_file?username=" +
+        getStorageExpire("username") +
+        "&filename=" +
+        encodeURIComponent(row.filename);
       this.$axios({
         method: "get",
-        url:
-          "/download_file?username=" +
-          getStorageExpire("username") +
-          "&filename=" +
-          row.filename,
+        url: url,
         responseType: "blob" //binary large object 二进制大对象
       }).then(resp => {
         // 这里要处理的是对于已经删除的文件，浏览器缓存访问可能导致返回404。直接跳到写好的404页面
