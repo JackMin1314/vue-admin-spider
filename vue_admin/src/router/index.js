@@ -130,18 +130,28 @@ export const constantRoutes = [
     redirect: '/excel/list',
     alwaysShow: true,
     meta: {
-      title: '用户文件',
+      title: '用户管理',
       icon: 'excel'
     },
     children: [{
-      path: 'list',
-      name: 'ArticleList',
-      component: () => import('@/views/excel/list'),
-      meta: {
-        title: '文件列表',
-        requireAuth: true
+        path: 'list',
+        name: 'ArticleList',
+        component: () => import('@/views/excel/list'),
+        meta: {
+          title: '文件列表',
+          requireAuth: true
+        }
+      },
+      {
+        path: 'key',
+        name: 'Changekey',
+        component: () => import('@/views/excel/changekey'),
+        meta: {
+          title: '修改密码',
+          requireAuth: true
+        }
       }
-    }]
+    ]
   },
 
   {
@@ -151,7 +161,7 @@ export const constantRoutes = [
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
-      title: '用户管理',
+      title: '权限管理',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -160,7 +170,7 @@ export const constantRoutes = [
       component: () => import('@/views/permission/role'),
       name: 'RolePermission',
       meta: {
-        title: '权限管理',
+        title: '用户权限',
         roles: ['admin']
       }
     }]
