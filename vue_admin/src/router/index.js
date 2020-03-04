@@ -109,21 +109,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'Form',
-      component: () => import('@/views/form/index'),
-      meta: {
-        title: 'Form',
-        icon: 'form',
-        requireAuth: true
-      }
-    }]
-  },
-
-  {
     path: '/excel',
     name: 'Excel',
     component: Layout,
@@ -172,6 +157,20 @@ export const constantRoutes = [
       meta: {
         title: '用户权限',
         roles: ['admin']
+      }
+    }]
+  },
+  {
+    path: '/handlelog',
+    component: Layout,
+    children: [{
+      path: 'index',
+      name: 'Handlelog',
+      component: () => import('@/views/handle-log/index'),
+      meta: {
+        title: '日志操作',
+        icon: 'tree-table',
+        requireAuth: true
       }
     }]
   },
