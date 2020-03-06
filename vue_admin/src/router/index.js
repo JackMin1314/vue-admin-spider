@@ -77,36 +77,6 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'example'
-    },
-    children: [{
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: {
-          title: 'Table',
-          icon: 'table',
-          requireAuth: true
-        }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: {
-          title: 'Tree',
-          icon: 'tree'
-        }
-      }
-    ]
-  },
 
   {
     path: '/excel',
@@ -119,23 +89,23 @@ export const constantRoutes = [
       icon: 'excel'
     },
     children: [{
-        path: 'list',
-        name: 'ArticleList',
-        component: () => import('@/views/excel/list'),
-        meta: {
-          title: '文件列表',
-          requireAuth: true
-        }
-      },
-      {
-        path: 'key',
-        name: 'Changekey',
-        component: () => import('@/views/excel/changekey'),
-        meta: {
-          title: '修改密码',
-          requireAuth: true
-        }
+      path: 'list',
+      name: 'ArticleList',
+      component: () => import('@/views/excel/list'),
+      meta: {
+        title: '文件列表',
+        requireAuth: true
       }
+    },
+    {
+      path: 'key',
+      name: 'Changekey',
+      component: () => import('@/views/excel/changekey'),
+      meta: {
+        title: '修改密码',
+        requireAuth: true
+      }
+    }
     ]
   },
 

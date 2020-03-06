@@ -51,7 +51,6 @@
 <script>
 import { responsetips } from "../../utils/myaxios";
 import { getStorageExpire } from "../../utils/mycookie";
-import { Form } from "element-ui";
 export default {
   name: "handler-log",
   data() {
