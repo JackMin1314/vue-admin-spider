@@ -162,7 +162,7 @@ export default {
           url: url,
           responseType: "blob",
           onDownloadProgress: progress => {
-            // 计算已经下载和总大小的百分比，保留两位小数
+            // 计算已经下载和总大小的百分比，保留两位小数.箭头函数可以使用this.正常的函数参数传递那种就不能使用this.了
             if (progress.lengthComputable) {
               this.percentnum =
                 (progress.loaded / progress.total) * (100).toFixed(2);
