@@ -116,6 +116,8 @@ export default {
                 console.log("spider task_id is:", this.task_id);
                 this.isloading = true;
                 this.isdisable = true;
+                //
+                this.timer = setInterval(this.spiderStatus, 5000);
               }
             });
         })
@@ -159,12 +161,13 @@ export default {
           methods: "get",
           url: url,
           responseType: "blob",
-          onDownloadProgress(progress) {
+          onDownloadProgress: progress => {
             // 计算已经下载和总大小的百分比，保留两位小数
-            this.percentnum = Number(
-              (progress.loaded / progress.total) * 100
-            ).toFixed(2);
-            console.log(this.percentnum);
+            if (progress.lengthComputable) {
+              this.percentnum =
+                (progress.loaded / progress.total) * (100).toFixed(2);
+              console.log(this.percentnum);
+            }
           }
         })
           .then(resp => {
@@ -179,6 +182,8 @@ export default {
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link); // 创建完a标签后删除
+              //
+              clearInterval(this.timer);
             }
           })
           .catch(err => {
@@ -194,9 +199,9 @@ export default {
       }
     }
   },
-  mounted() {
-    this.timer = setInterval(this.spiderStatus, 5000);
-  },
+  // mounted() {
+  //   this.timer = setInterval(this.spiderStatus, 5000);
+  // },
   beforeDestroy() {
     clearInterval(this.timer);
   }
