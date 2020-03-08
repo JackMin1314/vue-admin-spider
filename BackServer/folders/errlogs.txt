@@ -1,0 +1,98 @@
+2020-03-08  17:40:03 Sun  INFO super_Handle_LogDB() ==> jackmin用户删除日志成功，具有权限为super，锁定为0 
+2020-03-08  17:40:21 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  17:41:02 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "5953cdcc96fa6ea5590bfd98bc3a52a2", "USER_SALT": "2bcb9830aaf47ef32e4d944ac547f989de06ebb06a99695c76f989e39c996e46", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  17:41:02 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  17:41:02 Sun  WARNING exist_UserName_email() ==> 查询Allen用户或908302355@qq.com邮箱本地信息存在 
+2020-03-08  17:41:02 Sun  INFO sync_redis_delete() ==> 本地有Allen用户数据删除成功 
+2020-03-08  17:41:02 Sun  INFO deleteUSER() ==> jackmin管理员注销Allen用户成功 
+2020-03-08  17:41:02 Sun  WARNING deleteUSER() ==> 注销删除jackmin用户文件目录数据成功 
+2020-03-08  17:41:04 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  17:41:15 Sun  INFO quit() ==> jackmin用户退出成功,已经清除服务端session数据 
+2020-03-08  17:45:06 Sun  INFO send_email_capture() ==> 908302355@qq.com邮箱验证码51835011发送成功 
+2020-03-08  17:45:06 Sun  INFO create_redis_Capture() ==> redis保存908302355@qq.com邮箱的十分钟验证码51835011成功 
+2020-03-08  17:45:33 Sun  WARNING query_redis() ==> MySQL中无Allen用户 
+2020-03-08  17:56:32 Sun  INFO send_email_capture() ==> 908302355@qq.com邮箱验证码51266130发送成功 
+2020-03-08  17:56:32 Sun  INFO create_redis_Capture() ==> redis保存908302355@qq.com邮箱的十分钟验证码51266130成功 
+2020-03-08  17:56:52 Sun  WARNING query_redis() ==> MySQL中无Allen用户 
+2020-03-08  17:59:01 Sun  INFO send_email_capture() ==> 908302355@qq.com邮箱验证码66430951发送成功 
+2020-03-08  17:59:01 Sun  INFO create_redis_Capture() ==> redis保存908302355@qq.com邮箱的十分钟验证码66430951成功 
+2020-03-08  17:59:37 Sun  WARNING query_redis() ==> MySQL中无Allen用户 
+2020-03-08  18:02:41 Sun  INFO send_email_capture() ==> 908302355@qq.com邮箱验证码49226893发送成功 
+2020-03-08  18:02:41 Sun  INFO create_redis_Capture() ==> redis保存908302355@qq.com邮箱的十分钟验证码49226893成功 
+2020-03-08  18:03:08 Sun  WARNING query_redis() ==> MySQL中无Allen用户 
+2020-03-08  18:06:34 Sun  WARNING query_redis() ==> MySQL中无Allen用户 
+2020-03-08  18:06:34 Sun  INFO refresh_redis() ==> Allen用户同步到redis刷新成功 
+2020-03-08  18:06:34 Sun  INFO register() ==> 为新注册用户Allen创建文件夹成功 
+2020-03-08  18:08:28 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:15:27 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:15:27 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:15:27 Sun  WARNING login() ==> Allen用户登录失败,原因是已在其他地方登录 
+2020-03-08  18:17:38 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:17:38 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:17:38 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  18:40:57 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:41:16 Sun  INFO quit() ==> Allen用户退出成功,已经清除服务端session数据 
+2020-03-08  18:41:28 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:41:28 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:41:28 Sun  WARNING login() ==> Allen用户登录输入密码错误,登录失败 
+2020-03-08  18:41:36 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:41:36 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:41:36 Sun  WARNING login() ==> Allen用户登录失败,原因是已在其他地方登录 
+2020-03-08  18:45:06 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:45:06 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:45:06 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  18:45:16 Sun  INFO quit() ==> Allen用户退出成功,已经清除服务端session数据 
+2020-03-08  18:45:28 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:45:28 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:45:28 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  18:45:34 Sun  INFO quit() ==> Allen用户退出成功,已经清除服务端session数据 
+2020-03-08  18:45:57 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:45:57 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  18:45:57 Sun  INFO login() ==> jackmin用户登录成功 
+2020-03-08  18:46:07 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  18:51:26 Sun  INFO quit() ==> jackmin用户退出成功,已经清除服务端session数据 
+2020-03-08  18:51:35 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:51:35 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:51:35 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  18:52:28 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:52:28 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:52:28 Sun  WARNING updatePWD() ==> Allen用户修改密码失败 
+2020-03-08  18:53:12 Sun  INFO quit() ==> Allen用户退出成功,已经清除服务端session数据 
+2020-03-08  18:53:23 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  18:53:23 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:53:23 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  18:53:50 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:53:50 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  18:53:50 Sun  WARNING updatePWD() ==> Allen用户修改密码失败 
+2020-03-08  19:10:17 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:10:17 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:10:17 Sun  WARNING updatePWD() ==> Allen用户修改密码失败 
+2020-03-08  19:13:37 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:13:37 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "de86855f60a6ca9781338bb736a01dbd", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:13:37 Sun  INFO refresh_redis() ==> Allen用户同步到redis刷新成功 
+2020-03-08  19:13:37 Sun  WARNING updatePWD() ==> Allen用户修改密码成功,并退出登录 
+2020-03-08  19:13:37 Sun  INFO refresh_redis() ==> Allen用户同步到redis刷新成功 
+2020-03-08  19:13:51 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  19:13:51 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:13:51 Sun  INFO login() ==> Allen用户登录成功 
+2020-03-08  19:14:15 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:14:15 Sun  ERROR userFilesInfo() ==> Allen用户文件夹为空 
+2020-03-08  19:14:20 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:14:20 Sun  ERROR userFilesInfo() ==> Allen用户文件夹为空 
+2020-03-08  19:15:15 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:15:34 Sun  INFO handleITSpider() ==> Allen用户请求爬取https://www.ithome.com/0/476/660.htm成功 
+2020-03-08  19:15:55 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:16:02 Sun  INFO query_redis() ==> 查询redis中Allen用户数据为{"USER_TYPE": "user", "USER_LOCK": 0, "USER_NAME": "Allen", "USER_PASSWD": "7041fe421322b35ab1631c0f4698c07a", "USER_SALT": "e1f03a2cf29a65ea0fb83da2a0c0c30d8d2f50c082dc007d4b29e373a87374ac", "USER_MAIL": "908302355@qq.com", "SUBMISSION_DATE": "2020-03-08"}: 
+2020-03-08  19:24:04 Sun  INFO quit() ==> Allen用户退出成功,已经清除服务端session数据 
+2020-03-08  19:24:17 Sun  ERROR quit() ==> 拒绝响应None用户，原因是: 您已经退出登录 
+2020-03-08  19:24:17 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  19:24:17 Sun  INFO login() ==> jackmin用户登录成功 
+2020-03-08  19:24:20 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  19:24:54 Sun  INFO query_redis() ==> MySQL写入redis中fuwu1210用户数据为{'USER_TYPE': 'user', 'USER_LOCK': 0, 'USER_NAME': 'fuwu1210', 'USER_PASSWD': '"fc4b246996db47fd459e2fa3c4546c93"', 'USER_SALT': '"1df4911e72811d157a7dc3d7f10d88bb22f4411a39a9c79f65d3776f950a464a"', 'USER_MAIL': '2469967256@qq.com', 'SUBMISSION_DATE': '2020-03-08'}: 
+2020-03-08  19:24:54 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  19:24:54 Sun  WARNING exist_UserName_email() ==> 查询fuwu1210用户或2469967256@qq.com邮箱本地信息存在 
+2020-03-08  19:24:54 Sun  INFO sync_redis_delete() ==> 本地有fuwu1210用户数据删除成功 
+2020-03-08  19:24:54 Sun  INFO deleteUSER() ==> jackmin管理员注销fuwu1210用户成功 
+2020-03-08  19:24:54 Sun  WARNING deleteUSER() ==> 注销删除jackmin用户文件目录数据成功 
+2020-03-08  19:24:56 Sun  INFO query_redis() ==> 查询redis中jackmin用户数据为{"USER_TYPE": "super", "USER_LOCK": 0, "USER_NAME": "jackmin", "USER_PASSWD": "1617e16b59e38b2aa040ff4e4f735fa0", "USER_SALT": "234acf619b580aa8bf5262518bd5ae72c53f12279abe5dd3e15dd28428524e0d", "USER_MAIL": "1416825008@qq.com", "SUBMISSION_DATE": "2020-03-07"}: 
+2020-03-08  19:25:57 Sun  INFO quit() ==> jackmin用户退出成功,已经清除服务端session数据 
