@@ -1,4 +1,4 @@
-﻿"""
+"""
 @FileName   : flask_app.py
 @Author     : Chen Wang
 @Version    : Python3.8 、Windows or Linux
@@ -12,28 +12,33 @@
 
 """
 # import lib
-from flask import Flask, request, session, jsonify, make_response, send_from_directory, abort
-from flask_cors import CORS
-from flask_wtf.csrf import CSRFProtect, generate_csrf
+from Modules.runSpider import runSpider
+from Log.errlogs import logger, cleanLogging
+from Common.myemail import send_email_capture
+from Encryption.encryp import checkPW, computePW, create_Salt
+from Common import UserAction as User_Action
+from Common.timed_db_backup import timed_task
+from Common.common import getlocaltime, getCapture, getMachineInfo, createDirFile, threadWorker
+from Common import DataSynchronism as DB_Sync
+from Config.config import *
 from flask_mail import Mail
+from flask_wtf.csrf import CSRFProtect, generate_csrf
+from flask_cors import CORS
+from flask import Flask, request, session, jsonify, make_response, send_from_directory, abort
+import os
+import sys
+# __file__获取执行文件相对路径，整行为取上一级的上一级目录
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 
 # 导入相关配置
-from Config.config import *
 # 导入数据库处理
-from Common import DataSynchronism as DB_Sync
 # 导入通用模块
-from Common.common import getlocaltime, getCapture, getMachineInfo, createDirFile, threadWorker
-from Common.timed_db_backup import timed_task
-from Common import UserAction as User_Action
 # 导入加密验证模块
-from Encryption.encryp import checkPW, computePW, create_Salt
 # 导入邮箱验证码发送模块
-from Common.myemail import send_email_capture
 # 导入日志记录模块
-from Log.errlogs import logger, cleanLogging
 
 # 导入Module业务功能
-from Modules.runSpider import runSpider
 
 app = Flask(__name__)
 app.debug = True
@@ -301,7 +306,7 @@ def register():
                 if captureCode == capture:
                     code = "0"
                     msg = "注册成功"
-                    
+
                     # 新用户写入数据库
                     # 先对用户密码加密,需要盐
                     salt = create_Salt()
@@ -852,16 +857,17 @@ def handleITSpider(username: str, url: str, path: str):
     :param path: 用户文件夹下的绝对路径，保存爬取过的文件txt
     :return: 没有return(在ThreadWorker里面，return没有意义)
     """
+    myfilename = ""
     try:
-        filename = runSpider(url, path)
+        myfilename = runSpider(url, path)
     except Exception as e:
         logger.error('%s用户爬取%s过程出错，原因是%s' % (username, url, e))
-    if filename:
+    if myfilename:
         # 全局变量解决任务完成后，函数无法操作session的问题
         global spider_file_status
         spider_file_status = True
         global spider_file_name
-        spider_file_name = filename
+        spider_file_name = myfilename
         logger.info('%s用户请求爬取%s成功' % (username, url))
     else:
         logger.info('%s用户请求爬取%s失败' % (username, url))
@@ -888,24 +894,10 @@ def spiderStatus():
         return jsonify(code="-1", msg="数据未准备好，请稍等")
 
 
-@app.route('/getcookie')
-def getcookie():
-    uname = request.cookies.get('username')
-    # 获取session
-    session_item = session.get("isSession")
-    print(session_item)  # True
-    # 删除session
-    # session.pop("isSession")
-    # 清除所有session数据
-    session.clear()
-    print(session.get("isSession"))  # None
-    return ('<h1>welcome ' + str(uname) + '</h1>')
-
-
 # 初始运行时候调用
-#User_Action.create_user_rootdir()
-#timed_task()
+# User_Action.create_user_rootdir()
+# timed_task()
 if __name__ == "__main__":
-     User_Action.create_user_rootdir()
-     timed_task()
-     app.run(host='127.0.0.1', port=9999, debug=True)
+    User_Action.create_user_rootdir()
+    timed_task()
+    app.run(host='127.0.0.1', port=9999, debug=False, threaded=True)
