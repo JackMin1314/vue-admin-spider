@@ -58,6 +58,7 @@ export default {
       spider_file_name: "",
       isloading: false,
       isdisable: true,
+      isexception: false,
       percentnum: 0,
       task_id: "",
       timer: null,
@@ -116,8 +117,9 @@ export default {
                 console.log("spider task_id is:", this.task_id);
                 this.isloading = true;
                 this.isdisable = true;
-                //
-                this.timer = setInterval(this.spiderStatus, 5000);
+                // 重置isexception
+                this.isexception = false;
+                this.timer = setInterval(this.getstatus, 5000);
               }
             });
         })
@@ -126,6 +128,14 @@ export default {
           this.isdisable = true;
           console.log(err);
         });
+    },
+    getstatus() {
+      // 如果没有爬取异常，就请求
+      if (this.isexception == false) {
+        this.spiderStatus();
+      } else {
+        clearInterval(this.timer);
+      }
     },
     spiderStatus() {
       // 请求后端数据是否准备好了
@@ -142,9 +152,18 @@ export default {
               this.spider_file_name = resp.data.data;
               this.isloading = false;
               this.isdisable = false;
-            } else {
+            }
+            // 数据未准备好，请稍等
+            if (resp.data.code == "1") {
               this.isdisable = true;
               this.isloading = true;
+            }
+            // 爬取异常，需要停止爬取，同时定时器要停止并清除掉
+            if (resp.data.code == "-1") {
+              responsetips(resp);
+              this.isdisable = true;
+              this.isloading = false;
+              this.isexception = true;
             }
           });
       }
@@ -171,8 +190,6 @@ export default {
           }
         })
           .then(resp => {
-            responsetips(resp);
-
             if (resp.status === 200) {
               let url = window.URL.createObjectURL(resp.data);
               let link = document.createElement("a");
