@@ -52,7 +52,10 @@ def it_details(url):
     title_str = (re_result.encode('raw_unicode_escape')).decode(encoding='utf-8')
     print('标题名字为:', title_str)
     global it_save_name
+    # 取标题的前二十个字符为文件名
     it_save_name = title_str[:20] + '.txt'
+    # 剔除windows环境下保存文件名的非法字符
+    it_save_name = re.sub(r"""[\\/:*?"<>#|]""", '', it_save_name)
     print('保存文件名为:', it_save_name)
     result_str = str(result.content)  # 直接强制类型转换为str，方便提取
     comment_num = result_str[result_str.find('iframe align="middle" data=') + 28:result_str.find('datalapin ="0" scrolling="no"') - 2]
