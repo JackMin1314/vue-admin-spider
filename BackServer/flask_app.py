@@ -891,7 +891,11 @@ def spiderStatus():
         return jsonify(code="0", msg="爬取完毕，下载或查看文件列表", data=spider_file_name)
     # 数据未准备好
     else:
-        return jsonify(code="-1", msg="数据未准备好，请稍等")
+        if spider_file_name != "":
+            return jsonify(code="1", msg="数据未准备好，请稍等")
+        else:
+            # 解决当爬取异常的时候前端还在请求状态的问题
+            return jsonify(code="-1", msg="爬取异常，请联系管理员")
 
 
 # 初始运行时候调用
