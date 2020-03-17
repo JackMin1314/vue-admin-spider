@@ -1,0 +1,71 @@
+version: "3.7"
+services:
+    redis:
+        hostname:   spider-redis
+        container_name: spider-redis    # 不指定则会系统自动分配名称,根据BackServer/Config/config.py配置
+        restart: always  # always表容器运行发生错误时一直重启
+        build:
+            context:    ./
+            dockerfile: ./docker/redis/Dockerfile   #--port 6379 --appendonly yes --requirepass 5201020116
+        #command: /usr/local/bin/redis-server /usr/local/etc/redis.conf
+        environment:    # environment 一定要在command下面
+            - TZ=Asia/Shanghai
+        volumes:
+            - /etc/localtime:/etc/localtime:ro  # 设置容器时区与宿主机保持一致
+            #- ./docker/redis/redis.conf:/usr/local/etc/redis.conf
+        privileged: true
+        ports:
+            - "6379:6379"
+        tty: true
+
+    mysql:
+        hostname:   spider-mysql
+        container_name: spider-mysql
+        restart:    always
+        build:
+            context: ./
+            dockerfile: ./docker/mysql/Dockerfile
+        #command:
+        environment:
+            - MYSQL_ROOT_PASSWORD=5201020116    # 配置数据库的密码，这个根据项目BackServer的Config/config.py里面的设置对应
+        volumes:
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf   # 挂载配置文件- ./docker/mysql/Mysql_Init_Script.sql:/docker-entrypoint-initdb.d/    # 初始化数据库信息
+            - /etc/localtime:/etc/localtime:ro  # 设置容器时区与宿主机保持一致
+        ports:
+            - "3306:3306"
+
+    flask:
+        hostname:   spider-flask
+        container_name: spider-flask
+        restart:    always
+        build:  .   # 执行当前的目录下的dockerfile
+            # context:    ./
+            # dockerfile: ./docker/uwsgi_flask/Dockerfile
+        volumes:
+            - /etc/localtime:/etc/localtime:ro  # 设置容器时区与宿主机保持一致
+        ports:
+            - "9999:9999"
+        links:
+            - mysql
+            - redis
+        depends_on:
+            - mysql
+            - redis
+
+    nginx:
+        hostname:   spider-nginx
+        container_name: spider-nginx
+        restart:    always
+        build:
+            context:    ./
+            dockerfile: ./docker/web/Dockerfile
+        ports:
+            - "8080:8080"   # 根据nginx.conf配置
+            - "443:443"
+        volumes:
+            - ./dist/:/usr/share/nginx/html/dist
+        links:
+            - flask
+        depends_on:
+            - flask
+        
