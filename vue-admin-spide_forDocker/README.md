@@ -1,53 +1,75 @@
-[toc]
+ - [文章目录]()
+      - [一、docker安装MySql和Redis并启动]()
+         - [1. docker安装]()
+         - [2.docker启动安装的镜像]()
+         - [3. 查看docker启动镜像的时候所用的命令]()
+         - [4. 停止和删除镜像容器]()
+         - [5. 登陆和修改、提交镜像]()
+      - [二、每个镜像都有资源彼此独立]()
+         - [1. 如何查看docker里面container的ip]()
+         - [2. docker创建的容器具有ip的原因和通信方式]()
+         - [3. docker-compose编排容器并启动]()
+         - [4. 需要注意mysql和redis的ip修改]()
+      - [三、分离部署docker+nginx+uwsgi+mysql+redis]()
+         - [1. 设计图和项目路径]()
+         - [2. Dockerfile编写]()
+      - [四、uwsgi和docker爬坑]()
+         - [1. 报错invalid request block size: xxx...skip]()
+         - [2. 启动出现!!! no internal routing support, rebuild with pcre support !!!]()
+         - [3. uwsgi提示 No such file or directory [core/utils.c line 3654]]()
+         - [4. 提示failed to build: COPY failed: stat /var/lib/docker/tmp:no such file or directory]()
+         - [5. mysql提示Failed to get stat for directory pointed out by --secure-file-priv]()
+         - [6. Supplied value : /var/lib/mysql-files]()
+       - [五、项目展示和项目地址]() 
+           - [1. docker-compose编排成功后的截图]()
+           - [2. 项目界面的截图]()
+           - [3.写在最后]()
 
-# Docker前后端分离部署记录（含compose）
 
-​     今天给大家带来前后端分离项目下的docker的部署和启动，到最终的打包提交到dockerhub，以及爬坑记录。旨在解决同道小伙伴们的痛点。
+       
 
-​     刚学习docker，不足之处望请谅解，虚心接受大神指点，转注出，诚谢~ 文末附项目效果展示和源码地址。
-
+今天给大家带来前后端分离项目下的docker的部署和启动，到最终的打包提交到dockerhub，以及爬坑记录。旨在解决同道小伙伴们的痛点。
+​刚学习docker，不足之处望请谅解，虚心接受大神指点，转注出，诚谢~ 文末附项目效果展示和源码地址。
 ## 一、docker安装MySql和Redis并启动
 
 官网命令传送门==>[docker命令](https://docs.docker.com/engine/reference/commandline/docker/)
-
 ### 1. docker安装
 
 * 查询有哪些镜像
-
-```shell
+```
 $ docker search mysql
 ```
 
 * 安装指定的镜像(在此之前请先配制好镜像加速)
 
-```shell
+```
 $ docker pull mysql:8.0.18
 ```
 
 * 安装默认最新镜像
-
-```shell
-$ docker pull mysql
-# 或者 docker pull mysql:latest
 ```
-
+$ docker pull mysql
+# 或docker pull mysql:latest
+```
 同理安装Redis
 
 ### 2. docker启动安装的镜像
 
 * 查询本地安装了的镜像
 
-```shell
+```
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 mysql               latest              9b51d9275906        8 days ago          547MB
 redis               latest              7eed8df88d3b        2 weeks ago         98.2MB
 ```
 
-* 启动mysql
+* 启动Mysql
 
-```shell
-# 将docker的mysql镜像以守护进程的方式创建实例mysql-demo(容器),该实例的端口为3306对应的宿主机上的12345，初始化的数据库密码为5201020116.（也可以将宿主机的数据库的配置挂载到mysql-demo对应的位置）
+```
+# 将docker的mysql镜像以守护进程的方式创建实例mysql-demo(容器)
+# 该实例的端口为3306对应的宿主机上的12345，初始化的数据库密码为5201020116.
+# 也可以将宿主机的数据库的配置挂载到mysql-demo对应的位置
 $ docker run -p 12345:3306 --name mysql-demo -e MYSQL_ROOT_PASSWORD=5201020116 -d mysql
 ```
 
@@ -55,11 +77,12 @@ $ docker run -p 12345:3306 --name mysql-demo -e MYSQL_ROOT_PASSWORD=5201020116 -
 
 * 启动Redis
 
-```shell
+```
 # 默认redis容器里是没有配置文件的(可在容器的/etc/查看redis.conf不存在)，因而需要在创建容器时映射进来
 # 设置密码直接使用--requirepass "你的密码"即可
 # -i表示以交互模式运行容器，-t表示重新分配伪终端, -d以守护进程方式运行; -v 表示映射文件；-p端口映射
-$ docker run -itd --name redis-demo -v /etc/redis/redis.conf:/etc/redis.conf -p 9909:6379 --restart=always redis:latest redis-server --appendonly yes --requirepass "5201020116"
+$ docker run -itd --name redis-demo -v /etc/redis/redis.conf:/etc/redis.conf -p 9909:6379
+ --restart=always redis:latest redis-server --appendonly yes --requirepass "5201020116"
 # 查看刚创建的容器的信息(截取部分)
 $ docker ps -l
 CONTAINER ID      IMAGE      CREATED     STATUS             PORTS                    NAMES
@@ -77,13 +100,13 @@ OK
 
 ### 3. 查看docker启动镜像的时候所用的命令
 
-```shell
+```
 $ docker ps -a --no-trunc
 ```
 
 ### 4. 停止和删除镜像容器
 
-```shell
+```
 # 查看所有的容器
 $ docker ps -a
 # 停止/重启/删除容器 （已运行需要先停止再删除）
@@ -100,7 +123,7 @@ $ docker rmi $(docker images -q | awk '/^<none>/ { print $3 }')
 
 ### 5.  登陆和修改、提交镜像
 
-````shell
+````
 # 登录dockerhub
 $ docker login -u jackmin1314	# 你的dockerhub账户名
 # 提交前切记修改镜像为 账户名/镜像名:tag
@@ -117,14 +140,11 @@ c742d444d284: Pushed
 5216338b40a7: Mounted from library/alpine
 latest: digest: sha256:0554f8c96c61....ea3c01 size: 1777
 ````
-
-
-
-## 二、每个镜像都有资源，彼此独立。
+## 二、每个镜像都有资源，彼此独立
 
 ### 1. 如何查看docker里面container的ip
 
-```shell
+```
 $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 ```
 
@@ -132,26 +152,17 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 
 ### 2.  docker创建的容器具有ip的原因
 
-​		宿主机在安装docker后，docker会在宿主机上生成一张docker虚拟网卡，docker网卡通过NAT的方式为每一个容器分配ip，容器同处于docker网段下，因而容器间通信，可以通过ip。
+>* ​宿主机在安装docker后，docker会在宿主机上生成一张docker虚拟网卡，docker网卡通过NAT的方式为每一个容器分配ip，容器同处于docker网段下，因而容器间通信，可以通过ip。
+> * 而容器和宿主机器通信，则是通过docker虚拟网卡进行转发路由。
+> * 镜像创建了容器后，容器名会对应容器ip(在该容器的host有映射)，因而可以通过容器名执行相关操作.
 
-​		而容器和宿主机器通信，则是通过docker虚拟网卡进行转发路由。
-
-镜像创建了容器后，容器名会对应容器ip(在该容器的host有映射)，因而可以通过容器名执行相关操作.
-
-
-
-![](C:\Users\MECHREVO\Desktop\container-ip.png)
-
-
-
+如下示意图 ：![container-ip.png](https://upload-images.jianshu.io/upload_images/13876087-d01e023e5340f5ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ## 三、前后端分离部署(docker+nginx+uwsgi+mysql+redis)
 
 ### 1. 设计图和项目路径
 
 **docker** 的设计示意图.(其中nginx的反向代理协议用的是wsgi，添加了`include uwsgi_params; `，用了`uwsgi_pass`因为后台服务器用uwsgi；正常情况使用`proxy_pass`即可)
-
-![image-20200317140945090](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317140945090.png)
-
+![docker-Architecture.png](https://upload-images.jianshu.io/upload_images/13876087-18089ba3179ff96c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 **项目文件** 简易说明
 
 > + BackServer/ ----后端源码项 目
@@ -160,15 +171,14 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 > + docker/ ---- mysql、redis、nginx的配置和dockerfile
 > + Dockerfile ---- BackServer托管uwsgi服务器的dockerfile
 
-![](C:\Users\MECHREVO\Desktop\project_trees.png)
-
+项目文件说明图：![project_trees.png](https://upload-images.jianshu.io/upload_images/13876087-f3bdb19a5a8b3429.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ### 2. Dockerfile编写
 
 给出各个container的dockerfile,仅供参考。
 
 + nginx的dockerfile
 
-  ```dockerfile
+  ``` dockerfile
   FROM nginx:latest
   LABEL  auth=jackmin1314 	maintainer="1416825008@qq.com"
   RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
@@ -178,7 +188,8 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
   RUN rm  /etc/nginx/nginx.conf
   # 把主机的nginx.conf文件复制到nginx容器的/etc/nginx文件夹下
   ADD ./docker/web/nginx.conf /etc/nginx/
-  # 容器间暴露8080端口.如果是云服务器部署，记得在安全组添加开放端口8080。也可以在docker run -p指定具体的，或者-P默认expose暴露的端口
+  # 容器间暴露8080端口.如果是云服务器部署，记得在安全组添加开放端口8080。
+  # 也可以在docker run -p指定具体的，或者-P默认expose暴露的端口
   EXPOSE 8080
   # CMD命令用于容器启动时执行，而不像RUN的镜像构建时候运行
   # 使用daemon off的方式将nginx运行在前台保证镜像不退出
@@ -187,7 +198,7 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 
 + redis的dockerfile
 
-  ```dockerfile
+  ``` dockerfile
   FROM    redis:latest
   WORKDIR /app/redis/
   LABEL   auth=jackmin1314    maintainer="1416825008@qq.com"
@@ -203,7 +214,7 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 
 + mysql的dockerfile
 
-  ```dockerfile
+  ``` dockerfile
   FROM mysql:latest
   LABEL 	auth=jackmin1314	maintainer="1416825008@qq.com"
   RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
@@ -219,7 +230,7 @@ $ docker inspect --format '{{ .NetworkSettings.IPAddress }}' 053e4f11df7a
 
 + uwsgi的dockerfile
 
-  ```dockerfile
+  ``` dockerfile
   FROM alpine:latest
   LABEL auth=jackmin1314  maintainer="1416825008@qq.com"
   RUN mkdir -p /app/BackServer/
@@ -249,11 +260,12 @@ version: "3.7"
 services:
     redis:
         hostname:   spider-redis
-        container_name: spider-redis    # 不指定则会系统自动分配名称,根据BackServer/Config/config.py配置
+        # 根据BackServer/Config/config.py配置
+        container_name: spider-redis    # 不指定则会系统自动分配名称
         restart: always  # always表容器运行发生错误时一直重启
         build:
             context:    ./
-            dockerfile: ./docker/redis/Dockerfile   #--port 6379 --appendonly yes --requirepass 5201020116
+            dockerfile: ./docker/redis/Dockerfile 
         #command: /usr/local/bin/redis-server /usr/local/etc/redis.conf
         environment:    # environment 一定要在command下面
             - TZ=Asia/Shanghai
@@ -274,9 +286,11 @@ services:
             dockerfile: ./docker/mysql/Dockerfile
         #command:
         environment:
-            - MYSQL_ROOT_PASSWORD=5201020116    # 配置数据库的密码，这个根据项目BackServer的Config/config.py里面的设置对应
+            # 这个根据项目BackServer的Config/config.py里面的设置对应
+            - MYSQL_ROOT_PASSWORD=5201020116    # 配置数据库的密码
         volumes:
-            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf   # 挂载配置文件- ./docker/mysql/Mysql_Init_Script.sql:/docker-entrypoint-initdb.d/    # 初始化数据库信息
+           # 初始化数据库信息- ./docker/mysql/Mysql_Init_Script.sql:/docker-entrypoint-initdb.d/  
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf    # 挂载配置文件-
             - /etc/localtime:/etc/localtime:ro  # 设置容器时区与宿主机保持一致
         ports:
             - "3306:3306"
@@ -319,9 +333,9 @@ services:
 
 
 
-### 4. 需要注意的是mysql和redis的ip修改
+### 4. 需要注意mysql和redis的ip修改
 
-mysql和redis的ip不能是以前的localhost或者127.0.0.1.要改为容器名字作为ip，或者是容器的ip地址。
+mysql和redis的ip不能是以前的localhost或者127.0.0.1.要改为`容器名字`作为ip，或者是容器的`ip地址`。
 
 ## 四、uwsgi和docker爬坑
 
@@ -331,9 +345,9 @@ mysql和redis的ip不能是以前的localhost或者127.0.0.1.要改为容器名�
 
 ### 2. 启动出现!!! no internal routing support, rebuild with pcre support !!!
 
-这个是没有内部路由支持，需要通过使用pcre重新构建。需要先停掉uwsgi项目，然后重构下载依赖，具体做法为
+这个是没有内部路由支持，需要通过使用`pcre`重新构建。需要先停掉uwsgi项目，然后重构下载依赖，具体做法为
 
-```shell
+```
 # 卸载原有的uwsgi
 pip uninstall uwsgi
 # 安装pcre
@@ -349,11 +363,11 @@ pip install uwsgi --no-cache-dir
 > 注意一下几点,但不一定全是:
 >
 > * 注意启动的时候 `--ini uwsgi_flask.ini` 后面没有空格
-> * 检查文件.ini内容是否有注释,将注释全部删除即可
+> * 检查文件.ini内容是否有注释，将注释全部删除即可
 > * 检查文件.ini内容是否有空格，将空格全部删除
 > * 路径有误！将当前含有uwsgi_flask.ini的目录挂载到容器里(我的uwsgi.ini在BackServer里面)
 >
-> ```shell
+> ```
 > # When I fixed it, all started work as expected.
 > docker run -itd --name flask_env_container2 -v $PWD/BackServer:/app -p 9999:9999 flask_env:latest uwsgi --plugin=python3  --ini uwsgi.ini
 > ```
@@ -369,14 +383,14 @@ pip install uwsgi --no-cache-dir
 
 ### 5. mysql提示Failed to get stat for directory pointed out by --secure-file-priv
 
-```shell
+```
 vim /etc/my.cnf 	# (数据库配置文件)
 secure-file-priv="/" 	# (即可将数据导出到任意目录)
 ```
 
 如果是通过配置文件添加的，则修改my.cnf
 
-```shell
+```
 # 添加[mysqld]
 secure_file_priv=""
 ```
@@ -385,54 +399,33 @@ secure_file_priv=""
 
 /var/lib/mysql-files 文件是否存在或者权限问题
 
-```shell
+```
 touch /var/lib/mysql-files
 chown -R 777 /var/lib/mysql-files
 ```
 
 
 
-## 五、项目效果展示和项目地址
+## 五、项目展示和项目地址
 
 ### 1. docker-compose编排成功后的截图
+flask成功创建界面：![flask_docker启动成功界面.png](https://upload-images.jianshu.io/upload_images/13876087-91058339ef43c9b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)redis和mysql创建页面：![mysql初始化成功图片.png](https://upload-images.jianshu.io/upload_images/13876087-6998284c37a5d563.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-flask成功创建界面
+![redis初始化成功.png](https://upload-images.jianshu.io/upload_images/13876087-e0d15b8e91aa756a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+### 2\. 项目界面
 
-![image-20200317192044890](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317192044890.png)
-
-redis和mysql创建页面：
-
-![image-20200317192131766](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317192131766.png)
-
-![image-20200317192213247](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317192213247.png)
-
-nginx创建成功页面：
-
-![image-20200317192246714](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317192246714.png)
-
-### 2. 项目界面
-
-​		基于python flask和前端Vue.js、Element-ui等前后端分离的后台用户管理整合爬虫项目。提供了CSRF防护，权限验证，数据库备份导出excel，日志记录，定时任务，邮箱发送等功能，详见[Github](https://github.com/JackMin1314/vue-admin-spider)
-
+基于python flask和前端Vue.js、Element-ui等前后端分离的后台用户管理,整合爬虫项目。提供了CSRF防护，权限验证，数据库备份导出excel，日志记录，定时任务，邮箱发送等功能，详见[Github](https://github.com/JackMin1314/vue-admin-spider)
 一两个月的努力，希望大家能够支持，谢谢。期待您的start~
 
-login页面
+登陆界面：![登录界面.png](https://upload-images.jianshu.io/upload_images/13876087-4021981cc18feb19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-![image-20200317202111368](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317202111368.png)
+注册界面：![注册界面.png](https://upload-images.jianshu.io/upload_images/13876087-f15f67a12cab533a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-register页面
+爬取和下载界面:![dashboard.png](https://upload-images.jianshu.io/upload_images/13876087-27b30593ce81d14a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-![image-20200317202028591](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317202028591.png)
+用户权限管理界面:![user_permission.png](https://upload-images.jianshu.io/upload_images/13876087-072f9e6a879c115e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-dashboard页面
+日志备份下载和清空界面:![logging_backup.png](https://upload-images.jianshu.io/upload_images/13876087-7d331803e3a5928b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-![image-20200317202207441](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317202207441.png)
-
-用户权限管理
-
-![image-20200317202336915](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317202336915.png)
-
-文件和日志管理
-
-![image-20200317202553573](C:\Users\MECHREVO\AppData\Roaming\Typora\typora-user-images\image-20200317202553573.png)
-
+###3.写在最后
+由于时间关系，开发文档没有来的及编写，但代码注释说明写的很详细，项目可分成三部分使用本地开发、线上部署、和docker环境 (对于爬虫那块需要自行部署selenium和chromium)部署。欢迎大家相互学习交流，评论区留言或github提issue。项目地址>>[Github](https://github.com/JackMin1314/vue-admin-spider)
