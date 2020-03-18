@@ -18,7 +18,7 @@
          - [2. 启动出现!!! no internal routing support, rebuild with pcre support !!!](#-2启动出现----no-internal-routing-support-rebuild-with-pcre-support----)
          - [3. uwsgi提示 No such file or directory core/utils.c line 3654](#3-uwsgi提示-No-such-file-or-directory-[core/utils.c-line-3654])
          - [4. 提示failed to build: COPY failed: stat /var/lib/docker/tmp:no such file or directory](#4-提示failed-to-build--COPY-failed--stat-/var/lib/docker/tmp:no-such-file-or-directory)
-         - [5. mysql提示Failed to get stat for directory pointed out by --secure-file-priv](#5-mysql提示Failed-to-get-stat-for-directory pointed-out-by---secure-file-priv)
+         - [5. mysql提示Failed to get stat for directory pointed out by --secure-file-priv]()
          - [6. Supplied value : /var/lib/mysql-files](#6-Supplied-value---/var/lib/mysql-files)
       - [五、项目展示和项目地址](#五-项目展示和项目地址) 
            - [1. docker-compose编排成功后的截图](#1-docker-compose编排成功后的截图)
