@@ -12,7 +12,7 @@
          - [4. 需要注意mysql和redis的ip修改]()
       - [三、分离部署docker+nginx+uwsgi+mysql+redis]()
          - [1. 设计图和项目路径]()
-         - [2. Dockerfile编写]()
+         - [2. Dockerfile编写](#Dockerfile编写)
       - [四、uwsgi和docker爬坑]()
          - [1. 报错invalid request block size: xxx...skip]()
          - [2. 启动出现!!! no internal routing support, rebuild with pcre support !!!]()
