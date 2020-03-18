@@ -17,16 +17,13 @@
          - [1. 报错invalid request block size: xxx...skip](#1-报错invalid-request-block-size--xxx---skip)
          - [2. 启动出现!!! no internal routing support, rebuild with pcre support !!!](#-2启动出现----no-internal-routing-support-rebuild-with-pcre-support----)
          - [3. uwsgi提示 No such file or directory core/utils.c line 3654](#3-uwsgi提示-No-such-file-or-directory-[core/utils.c-line-3654])
-         - [4. 提示failed to build: COPY failed: stat /var/lib/docker/tmp:no such file or directory](#4-提示failed-to-build:-COPY-failed:-stat-/var/lib/docker/tmp:no-such-file-or-directory)
+         - [4. 提示failed to build: COPY failed: stat /var/lib/docker/tmp:no such file or directory](#4-提示failed-to-build--COPY-failed--stat-/var/lib/docker/tmp:no-such-file-or-directory)
          - [5. mysql提示Failed to get stat for directory pointed out by --secure-file-priv](#5-mysql提示Failed-to-get-stat-for-directory pointed-out-by---secure-file-priv)
-         - [6. Supplied value : /var/lib/mysql-files](#6-Supplied-value-:-/var/lib/mysql-files)
+         - [6. Supplied value : /var/lib/mysql-files](#6-Supplied-value---/var/lib/mysql-files)
       - [五、项目展示和项目地址](#五-项目展示和项目地址) 
            - [1. docker-compose编排成功后的截图](#1-docker-compose编排成功后的截图)
-           - [2. 项目界面的截图](#2-项目界面的截图)
-           - [3. 写在最后](#3-写在最后)
-
-
-       
+           - [2. 项目界面的截图](#-2项目界面的截图)
+           - [3. 写在最后](#-3写在最后)
 
 今天给大家带来前后端分离项目下的docker的部署和启动，到最终的打包提交到dockerhub，以及爬坑记录。旨在解决同道小伙伴们的痛点。
 ​刚学习docker，不足之处望请谅解，虚心接受大神指点，转注出，诚谢~ 文末附项目效果展示和源码地址。
