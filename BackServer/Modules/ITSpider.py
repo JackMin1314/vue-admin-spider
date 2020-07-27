@@ -52,13 +52,15 @@ def it_details(url):
     title_str = (re_result.encode('raw_unicode_escape')).decode(encoding='utf-8')
     print('标题名字为:', title_str)
     global it_save_name
-    # 取标题的前二十个字符为文件名
     it_save_name = title_str[:20] + '.txt'
-    # 剔除windows环境下保存文件名的非法字符
     it_save_name = re.sub(r"""[\\/:*?"<>#|]""", '', it_save_name)
     print('保存文件名为:', it_save_name)
     result_str = str(result.content)  # 直接强制类型转换为str，方便提取
-    comment_num = result_str[result_str.find('iframe align="middle" data=') + 28:result_str.find('datalapin ="0" scrolling="no"') - 2]
+    # comment_num = result_str[result_str.find('iframe align="middle" data=') + 28:result_str.find('datalapin ="0" scrolling="no"') - 2]
+    index_start = result_str.find('align="middle" data=')
+    index_end = result_str.find('datalapin') - 2
+    comment_num = result_str[index_start+21:index_end]
+    # print("ooops!! comment_num:", comment_num)
     cookies = str(result.cookies)  # 当使用post方法的时候cookies才能获得，改个headers就行
     asp_net_sessionid = cookies[cookies.find('ASP.NET_SessionId='):cookies.find(' for')]
     # BEC = cookies[cookies.find('BEC='):cookies.find('/>]') - 19] # 2020改版后不使用了
@@ -173,9 +175,14 @@ def ctl_spider(page_start,url,cookies,comment_url,ajax_url, headers):
     # print(pagetype.text)
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    pagetype = soup.text
-    pagetype = pagetype[pagetype.find('var pagetype = \'') + 16:pagetype.find('lhcl(1)') - 2]
-    # print(pagetype)
+    # pagetype = soup.text
+    # pagetype = pagetype[pagetype.find('var pagetype = \'') + 16:pagetype.find('lhcl(1)') - 2]
+    pagetype_all = soup.find('div', id="divLatest")
+    pagetype = pagetype_all.contents[-1]
+    # print("hi, pagetype:", pagetype)
+    pagetype = str(pagetype)
+    pagetype = pagetype[24:-11]
+    # print("need myhash:", pagetype)
     myhash = pagetype
     time.sleep(1)
     driver.close()
